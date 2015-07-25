@@ -1,40 +1,40 @@
-var request = require('request');
-var fuse = require('fuse.js');
+//var request = require('request');
+var fuse = require('./fuse.js');
+var colors = require('./colors.js');
+var _ = require('lodash');
 
-var books = [{
-  id: 1,
-  title: 'The Great Gatsby',
-  author: 'F. Scott Fitzgerald'
-},{
-  id: 2,
-  title: 'The DaVinci Code',
-  author: 'Dan Brown'
-},{
-  id: 3,
-  title: 'Angels & Demons',
-  author: 'Dan Brown'
-}];
 
-var options = {
-  keys: ['author', 'title'],   // keys to search in
-  id: 'id'                     // return a list of identifiers only
-};
-var f = new fuse(books, options);
-var result = f.search('brwn'); // Fuzzy-search for pattern 'brwn'
+function matchColor(speech) {
+  var match;
+  var options = {
+    keys: ['name'],
+    id: 'name',
+    threshold: 0.4,
+    includeScore: true
+  };
+  var f = new fuse(colors.colors, options);
+  var result = f.search(speech);
 
-console.log(result);
+  var exactMatches = _.filter(result, function (item) {
+    return item.score === 0;
+  });
 
-function postColor(color) {
-    console.log(color);
-    request.post({
-        url: 'https://maker.ifttt.com/trigger/hue_color_change/with/key/dUx1De2fiVVHUKial8Qtkc',
-        json: true,
-        body: {
-            'value1': color
-        }
-    });
+  if (exactMatches.length) {
+    match = _.filter(exactMatches, function (match) {
+      return match.item.length === speech.length;
+    })[0].item;
+  } else if (result.length) {
+    match = result[0].item;
+  }
+
+  return match;
 }
 
-
-
-postColor('blue');
+console.log(matchColor('blue'));
+console.log(matchColor('red'));
+console.log(matchColor('orange'));
+console.log(matchColor('burnt orange'));
+console.log(matchColor('aqua'));
+console.log(matchColor('teal'));
+console.log(matchColor('light blue'));
+console.log(matchColor('white'));
