@@ -1,6 +1,7 @@
 var request = require('request');
 var fuse = require('./fuse.js');
 var colors = require('./colors.js');
+var properties = require('./properties.js');
 var _ = require('lodash');
 
 // Route the incoming request based on type (LaunchRequest, IntentRequest,
@@ -167,14 +168,14 @@ function matchColor(speech) {
 function postColor(color, callback) {
   if (color.toLowerCase() === 'loop') {
     request.post({
-      url: 'https://maker.ifttt.com/trigger/hue_color_loop/with/key/dUx1De2fiVVHUKial8Qtkc',
+      url: 'https://maker.ifttt.com/trigger/hue_color_loop/with/key/' + properties.iftttSecretKey,
       json: true,
       body: {
       }
     }, callback);
   } else {
     request.post({
-      url: 'https://maker.ifttt.com/trigger/hue_color_change/with/key/dUx1De2fiVVHUKial8Qtkc',
+      url: 'https://maker.ifttt.com/trigger/hue_color_change/with/key/' + properties.iftttSecretKey,
       json: true,
       body: {
         'value1': color
