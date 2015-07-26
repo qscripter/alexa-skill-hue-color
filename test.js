@@ -8,7 +8,6 @@ function matchColor(speech) {
   var match;
   var options = {
     keys: ['name'],
-    id: 'name',
     threshold: 0.4,
     includeScore: true
   };
@@ -21,7 +20,7 @@ function matchColor(speech) {
 
   if (exactMatches.length) {
     match = _.filter(exactMatches, function (match) {
-      return match.item.length === speech.length;
+      return match.item.name.length === speech.length;
     })[0].item;
   } else if (result.length) {
     match = result[0].item;
@@ -30,7 +29,7 @@ function matchColor(speech) {
   return match;
 }
 
-console.log(matchColor('blue'));
+console.log(matchColor('blue').hex);
 console.log(matchColor('red'));
 console.log(matchColor('orange'));
 console.log(matchColor('burnt orange'));

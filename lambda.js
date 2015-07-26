@@ -123,9 +123,9 @@ function setColorInSession(intent, session, callback) {
   }
 
   if (favoriteColor) {
-    speechOutput = "Changing to " + favoriteColor;
+    speechOutput = "Changing to " + favoriteColor.name;
     repromptText = "";
-    postColor(favoriteColor, callbackClosure);
+    postColor(favoriteColor.hex, callbackClosure);
   } else {
     speechOutput = "I'm not sure what color you want the lights, please try again";
     repromptText = "What color would you like the lights?";
@@ -137,15 +137,12 @@ function setColorInSession(intent, session, callback) {
     callback(sessionAttributes,
          buildSpeechletResponse(cardTitle, speechOutput, repromptText, shouldEndSession));
   }
-
-  
 }
 
 function matchColor(speech) {
   var match;
   var options = {
     keys: ['name'],
-    id: 'name',
     threshold: 0.4,
     includeScore: true
   };
@@ -158,7 +155,7 @@ function matchColor(speech) {
 
   if (exactMatches.length) {
     match = _.filter(exactMatches, function (match) {
-      return match.item.length === speech.length;
+      return match.item.name.length === speech.length;
     })[0].item;
   } else if (result.length) {
     match = result[0].item;
