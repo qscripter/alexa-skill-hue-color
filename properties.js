@@ -1,0 +1,1 @@
+exports.iftttSecretKey = 'Put IFTTT secret key for maker channel here';

@@ -1,8 +1,9 @@
 var request = require('request');
+var _ = require('lodash');
+
 var fuse = require('./fuse.js');
 var colors = require('./colors.js');
 var properties = require('./properties.js');
-var _ = require('lodash');
 
 // Route the incoming request based on type (LaunchRequest, IntentRequest,
 // etc.) The JSON body of the request is provided in the event parameter.
